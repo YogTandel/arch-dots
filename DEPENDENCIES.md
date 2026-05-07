@@ -170,12 +170,15 @@ yay -S swww swaync cava cliphist rofi-wayland hyprshot \
 > Fonts are required for icons to render correctly in Waybar, Hyprlock, and the terminal.
 > Make sure `ttf-jetbrains-mono-nerd` is installed before launching Hyprland.
 
-> cp -r d:\arch-dots\.config/* ~/.config/
-> mv ~/.config/zsh/.zshrc ~/.zshrc
-> cp ~/.config/waybar/funconfig.jsonc ~/.config/waybar/config.jsonc
-> cp ~/.config/waybar/funstyle.css ~/.config/waybar/style.css
+---
 
-> cp ~/.config/waybar/funconfig.jsonc ~/.config/waybar/config.jsonc
-> cp ~/.config/waybar/funstyle.css ~/.config/waybar/style.css
+## 🎨 Rofi Themes Setup
 
-> cp ~/.config/waybar/funcolors.css ~/.config/waybar/colors.css
+The app launcher (`Super+Enter`) uses custom themes from `adi1090x/rofi`. You must download and install them for it to work:
+
+```bash
+git clone --depth=1 https://github.com/adi1090x/rofi.git
+cd rofi
+chmod +x setup.sh
+./setup.sh
+```
