@@ -172,10 +172,27 @@ yay -S swww swaync cava cliphist rofi-wayland hyprshot \
 
 ---
 
-## 🎨 Rofi Themes Setup
+## 🚀 Full Setup Guide
 
-The app launcher (`Super+Enter`) uses custom themes from `adi1090x/rofi`. You must download and install them for it to work:
+Follow these steps to install the dotfiles on a fresh Arch Linux system:
 
+### 1. Copy Configuration Files
+Copy all files from this repository's `.config` folder into your system's `~/.config` folder:
+```bash
+cp -r .config/* ~/.config/
+```
+
+### 2. Set up ZSH
+Move the ZSH configuration to your home directory:
+```bash
+mv ~/.config/zsh/.zshrc ~/.zshrc
+```
+
+### 3. Install Dependencies
+Run the pacman and yay commands from the **⚡ Quick Install** section above to install all required packages.
+
+### 4. Install Rofi Themes
+The app launcher (`Super+Enter`) uses custom themes from `adi1090x/rofi`. You must download and install them:
 ```bash
 git clone --depth=1 https://github.com/adi1090x/rofi.git
 cd rofi
