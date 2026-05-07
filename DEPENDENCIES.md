@@ -172,3 +172,5 @@ yay -S swww swaync cava cliphist rofi-wayland hyprshot \
 
 cp -r d:\arch-dots\.config/* ~/.config/
 mv ~/.config/zsh/.zshrc ~/.zshrc
+cp ~/.config/waybar/funconfig.jsonc ~/.config/waybar/config.jsonc
+cp ~/.config/waybar/funstyle.css ~/.config/waybar/style.css
