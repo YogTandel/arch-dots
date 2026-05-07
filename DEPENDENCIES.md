@@ -169,3 +169,6 @@ yay -S swww swaync cava cliphist rofi-wayland hyprshot \
 > [!NOTE]
 > Fonts are required for icons to render correctly in Waybar, Hyprlock, and the terminal.
 > Make sure `ttf-jetbrains-mono-nerd` is installed before launching Hyprland.
+
+cp -r d:\arch-dots\.config/* ~/.config/
+mv ~/.config/zsh/.zshrc ~/.zshrc
