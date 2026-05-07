@@ -177,3 +177,5 @@ yay -S swww swaync cava cliphist rofi-wayland hyprshot \
 
 > cp ~/.config/waybar/funconfig.jsonc ~/.config/waybar/config.jsonc
 > cp ~/.config/waybar/funstyle.css ~/.config/waybar/style.css
+
+> cp ~/.config/waybar/funcolors.css ~/.config/waybar/colors.css
