@@ -59,7 +59,11 @@ See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for theme system details and [.config/r
 |---------|---------|-------------|
 | `hyprland` | `pacman -S hyprland` | Wayland compositor / window manager |
 | `hyprlock` | `pacman -S hyprlock` | Lock screen (triggered via `Super+L`) |
+| `sddm` | `pacman -S sddm` | Graphical login screen using the included `arch-dots` theme |
+| `xorg-server` | `pacman -S xorg-server` | Display server used by the SDDM greeter |
 | `xorg-xwayland` | `pacman -S xorg-xwayland` | XWayland support for legacy X11 apps |
+| `wlogout` | `yay -S wlogout` | Power/session menu (triggered via `Super+M`) |
+| `jq` | `pacman -S jq` | JSON parser used by the wlogout launcher |
 
 ## 🖼️ Wallpaper & Theming & Color Syncing
 
@@ -113,7 +117,14 @@ See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for theme system details and [.config/r
 
 | Package | Install | Description |
 |---------|---------|-------------|
-| `dolphin` | `pacman -S dolphin` | File manager (`Super+E`) |
+| `thunar` | `pacman -S thunar` | GTK file manager (`Super+E`) |
+| `thunar-archive-plugin` | `pacman -S thunar-archive-plugin` | Archive actions in Thunar context menus |
+| `thunar-volman` | `pacman -S thunar-volman` | Removable media integration for Thunar |
+| `tumbler` | `pacman -S tumbler` | Thumbnail service for Thunar |
+| `ffmpegthumbnailer` | `pacman -S ffmpegthumbnailer` | Video thumbnails |
+| `gvfs gvfs-mtp` | `pacman -S gvfs gvfs-mtp` | Trash, mounts, and phone/MTP support |
+| `file-roller` | `pacman -S file-roller` | GTK archive manager |
+| `papirus-icon-theme` | `pacman -S papirus-icon-theme` | Icon theme used by GTK apps |
 
 ## 🖥️ Terminal & Shell
 
@@ -173,17 +184,19 @@ See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for theme system details and [.config/r
 ### Pacman (Official Repos)
 
 ```bash
-sudo pacman -S hyprland hyprlock xorg-xwayland python-pywal waybar pavucontrol \
+sudo pacman -S hyprland hyprlock sddm xorg-server xorg-xwayland python-pywal waybar pavucontrol \
   playerctl power-profiles-daemon network-manager-applet pipewire pipewire-pulse \
-  pipewire-alsa wireplumber brightnessctl wl-clipboard dolphin kitty zsh starship \
-  fzf zsh-autosuggestions zsh-syntax-highlighting fastfetch ttf-jetbrains-mono-nerd imagemagick
+  pipewire-alsa wireplumber brightnessctl wl-clipboard thunar thunar-archive-plugin \
+  thunar-volman tumbler ffmpegthumbnailer gvfs gvfs-mtp file-roller papirus-icon-theme \
+  kitty zsh starship \
+  fzf zsh-autosuggestions zsh-syntax-highlighting fastfetch ttf-jetbrains-mono-nerd imagemagick jq
 ```
 
 ### AUR (via yay)
 
 ```bash
 yay -S swww swaync cava cliphist rofi-wayland hyprshot \
-  zsh-fast-syntax-highlighting iwdgui libva-nvidia-driver matugen-bin
+  zsh-fast-syntax-highlighting iwdgui libva-nvidia-driver matugen-bin wlogout
 ```
 
 > [!NOTE]
@@ -217,7 +230,18 @@ git clone https://github.com/Darkkal44/qylock.git ~/.local/share/quickshell-lock
 chmod +x ~/.local/share/quickshell-lockscreen/lock.sh
 ```
 
-### 4. Set Up Wallpapers & Theme System
+### 4. Install SDDM Login Theme
+
+The automated installer copies the included SDDM theme and enables SDDM:
+
+```bash
+sudo cp -r sddm/arch-dots /usr/share/sddm/themes/
+sudo mkdir -p /etc/sddm.conf.d
+printf "[Theme]\nCurrent=arch-dots\n" | sudo tee /etc/sddm.conf.d/10-arch-dots.conf
+sudo systemctl enable sddm.service
+```
+
+### 5. Set Up Wallpapers & Theme System
 
 Create the organized wallpaper folder structure:
 ```bash
@@ -230,7 +254,7 @@ Add your wallpapers to these folders and use:
 - `Super+Shift+W` - Toggle dark/light mode
 - `Super+Shift+B` - Next wallpaper
 
-### 5. Set Up Fastfetch Images
+### 6. Set Up Fastfetch Images
 
 Organize your fastfetch display images:
 ```bash
@@ -241,7 +265,7 @@ mkdir -p ~/.config/fastfetch/images/{anime,scenery,abstract,other}
 
 See `.config/fastfetch/FASTFETCH_IMAGES.md` for details.
 
-### 6. Explore ROFI Dashboard
+### 7. Explore ROFI Dashboard
 
 Open the ROFI scripts dashboard:
 ```bash
@@ -265,7 +289,7 @@ Features:
 | `Super + Enter` | App Launcher (Rofi) |
 | `Super + Alt + Space` | ROFI Dashboard Menu |
 | `Super + T` | Open Terminal (Kitty) |
-| `Super + E` | Open File Manager (Dolphin) |
+| `Super + E` | Open File Manager (Thunar) |
 | `Super + Q` | Close Active Window |
 | `Super + M` | Power Menu (Shutdown / Reboot) |
 | `Super + W` | Random Wallpaper & Auto-Sync Theme |

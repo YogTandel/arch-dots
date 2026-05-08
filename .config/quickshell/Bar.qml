@@ -680,7 +680,7 @@ PanelWindow {
                 width: implicitWidth + bar.pillPadH * 2
                 fg: Theme.on_primary_container
                 bg: Qt.rgba(Theme.primary_container.r, Theme.primary_container.g, Theme.primary_container.b, 0.85)
-                onClicked: bar.launch(["bash", "-c", "~/cloudyy_scripts/wlogout.sh"])
+                onClicked: bar.launch(["bash", "-c", "~/.config/wlogout/launch.sh"])
             }
         }
     }

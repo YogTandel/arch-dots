@@ -1,0 +1,16 @@
+[SddmGreeterTheme]
+Name=Arch Dots
+Description=Glassy Hyprland login theme for arch-dots
+Author=arch-dots
+Copyright=2026
+License=MIT
+Type=sddm-theme
+Version=1.0
+Website=
+Screenshot=
+MainScript=Main.qml
+ConfigFile=theme.conf
+TranslationsDirectory=translations
+Email=
+Theme-Id=arch-dots
+Theme-API=2.0

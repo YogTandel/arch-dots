@@ -1,0 +1,42 @@
+@define-color background #12140e;
+@define-color foreground #e3e3d8;
+@define-color primary #b5d086;
+@define-color on-primary #233600;
+@define-color surface #12140e;
+@define-color on-surface #e3e3d8;
+@define-color outline #8f9285;
+@define-color outline-variant #45483d;
+@define-color selection-bg #414a32;
+@define-color selection-fg #dde6c6;
+
+@import url("../matugen/generated/gtk-4.css");
+
+window,
+dialog,
+popover {
+  background-color: @surface;
+  color: @on-surface;
+}
+
+headerbar {
+  background-color: alpha(@background, 0.92);
+  color: @foreground;
+  border-bottom: 1px solid alpha(@outline-variant, 0.45);
+}
+
+button {
+  border-radius: 8px;
+  background-color: alpha(@selection-bg, 0.35);
+  color: @foreground;
+}
+
+button:hover {
+  background-color: alpha(@selection-bg, 0.62);
+}
+
+entry,
+searchentry {
+  border-radius: 8px;
+  background-color: alpha(@background, 0.72);
+  color: @foreground;
+}

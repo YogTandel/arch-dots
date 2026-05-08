@@ -138,7 +138,7 @@
     },
     "custom/power": {
         "format": "\udb81\udc25",
-        "on-click": "~/cloudyy_scripts/waybar/wlogout.sh",
+        "on-click": "~/.config/wlogout/launch.sh",
         "tooltip-format": "Power Menu"
     }
 }

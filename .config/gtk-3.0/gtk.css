@@ -1,0 +1,81 @@
+@define-color background #12140e;
+@define-color foreground #e3e3d8;
+@define-color primary #b5d086;
+@define-color on-primary #233600;
+@define-color surface #12140e;
+@define-color on-surface #e3e3d8;
+@define-color outline #8f9285;
+@define-color outline-variant #45483d;
+@define-color selection-bg #414a32;
+@define-color selection-fg #dde6c6;
+
+@import url("../matugen/generated/gtk-3.css");
+
+window,
+dialog,
+popover,
+menu {
+  background-color: @surface;
+  color: @on-surface;
+}
+
+headerbar,
+.titlebar {
+  background-color: alpha(@background, 0.92);
+  color: @foreground;
+  border-bottom: 1px solid alpha(@outline-variant, 0.45);
+}
+
+button {
+  border-radius: 8px;
+  border-color: alpha(@outline-variant, 0.45);
+  background-image: none;
+  background-color: alpha(@selection-bg, 0.35);
+  color: @foreground;
+}
+
+button:hover {
+  background-color: alpha(@selection-bg, 0.62);
+  border-color: alpha(@primary, 0.58);
+}
+
+entry,
+searchentry {
+  border-radius: 8px;
+  border-color: alpha(@outline-variant, 0.58);
+  background-color: alpha(@background, 0.72);
+  color: @foreground;
+}
+
+treeview,
+treeview.view,
+iconview,
+.view {
+  background-color: @surface;
+  color: @on-surface;
+}
+
+treeview:selected,
+treeview.view:selected,
+iconview:selected,
+.view:selected {
+  background-color: @selection-bg;
+  color: @selection-fg;
+}
+
+placessidebar,
+placessidebar list,
+placessidebar row {
+  background-color: alpha(@background, 0.82);
+  color: @foreground;
+}
+
+placessidebar row:selected {
+  background-color: @selection-bg;
+  color: @selection-fg;
+}
+
+scrollbar slider {
+  border-radius: 999px;
+  background-color: alpha(@primary, 0.45);
+}

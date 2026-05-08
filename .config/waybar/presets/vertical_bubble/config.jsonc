@@ -104,7 +104,7 @@
     },
     "custom/power": {
         "format": "\u23fb",
-        "on-click": "~/cloudyy_scripts/waybar/wlogout.sh",
+        "on-click": "~/.config/wlogout/launch.sh",
         "tooltip-format": "Power"
     }
 }
