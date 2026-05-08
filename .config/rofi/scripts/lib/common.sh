@@ -7,7 +7,7 @@
 
 # --- PATHS ---
 readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
-readonly THEME_CTL="${HOME}/.cloudyy_scripts/theme_controller.sh"
+readonly THEME_CTL="${HOME}/.config/theme_controller.sh"
 readonly BASE_WALL_DIR="${HOME}/Wallpapers"
 readonly CACHE_DIR="${HOME}/.cache/rofi_thumbs"
 

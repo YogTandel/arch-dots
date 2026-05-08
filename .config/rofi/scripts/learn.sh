@@ -5,7 +5,7 @@
 
 set -uo pipefail
 
-readonly ROFI_DIR="${HOME}/cloudyy_scripts/rofi"
+readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
 source "${ROFI_DIR}/lib/common.sh"
 
 # =============================================================================
@@ -13,7 +13,7 @@ source "${ROFI_DIR}/lib/common.sh"
 # =============================================================================
 
 show_keybind_tips() {
-  local script="${HOME}/cloudyy_scripts/rofi/keybinds.sh"
+  local script="${HOME}/.config/rofi/scripts/keybinds.sh"
   [[ ! -x "$script" ]] && {
     notify-send "Error" "keybinds.sh not found at: $script"
     show_learn_menu
@@ -25,7 +25,7 @@ show_keybind_tips() {
 }
 
 show_browser_keybinds() {
-  local script="${HOME}/cloudyy_scripts/rofi/browser-keybinds.sh"
+  local script="${HOME}/.config/rofi/scripts/browser-keybinds.sh"
   [[ ! -x "$script" ]] && {
     notify-send "Error" "browser-keybinds.sh not found at: $script"
     show_learn_menu

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # main.sh — Cloudyy Dashboard (Entry Point)
-# All submenus live in ~/cloudyy_scripts/rofi/
+# All submenus live in ~/.config/rofi/scripts/
 # =============================================================================
 
 set -uo pipefail

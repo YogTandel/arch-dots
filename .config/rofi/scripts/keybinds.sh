@@ -2,7 +2,7 @@
 # ==============================================================================
 # CLOUDYY KEYBIND VIEWER
 # Uses hyprctl -j binds (live data, picks up bindd descriptions automatically)
-# Place at: ~/cloudyy_scripts/keybinds.sh
+# Place at: ~/.config/rofi/scripts/keybinds.sh
 # Deps: hyprctl, jq, rofi
 # ==============================================================================
 

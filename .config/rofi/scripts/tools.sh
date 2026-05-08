@@ -5,18 +5,15 @@
 
 set -uo pipefail
 
-readonly ROFI_DIR="${HOME}/cloudyy_scripts/rofi"
+readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
 source "${ROFI_DIR}/lib/common.sh"
 
 show_tools_menu() {
   local choice
   choice=$(menu "Tools" \
-    "󰆍 Live Text Extraction\n󰀲 LocalSend")
+    "󰀲 LocalSend")
 
   case "$choice" in
-  "󰆍 Live Text Extraction")
-    exec "${HOME}/cloudyy_scripts/clipboard/text_extract.sh"
-    ;;
   "󰀲 LocalSend")
     localsend &
     ;;

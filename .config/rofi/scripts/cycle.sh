@@ -5,7 +5,7 @@
 
 set -uo pipefail
 
-readonly ROFI_DIR="${HOME}/cloudyy_scripts/rofi"
+readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
 source "${ROFI_DIR}/lib/common.sh"
 
 # --- PATHS ---
@@ -137,7 +137,7 @@ write_automode_helper() {
 set -uo pipefail
 
 CYCLE_CONF="${HOME}/.config/hypr/theme_state/cycle.conf"
-THEME_CTL="${HOME}/cloudyy_scripts/theme_controller.sh"
+THEME_CTL="${HOME}/.config/theme_controller.sh"
 
 AUTOMODE_ENABLED="false"
 AUTOMODE_LIGHT_HOUR="7"
