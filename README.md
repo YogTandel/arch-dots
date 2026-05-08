@@ -2,16 +2,29 @@
 My personal dotfiles for Arch Linux. This repository is not actively maintained. 
 At this point this just shows the evolution of my rice :D
 
-## 🎨 NEW: Integrated Theme System
+## 🎨 NEW: Integrated Theme System + ROFI Scripts Ecosystem
 
-This repo now includes a **wallpaper-driven theming system** that automatically syncs colors across ALL your apps when you switch wallpapers or toggle between dark/light modes. See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for full documentation.
+This repo now includes a **wallpaper-driven theming system** that automatically syncs colors across ALL your apps when you switch wallpapers or toggle between dark/light modes. Plus a **complete ROFI scripts ecosystem** for enhanced productivity!
 
-**Quick Start:**
+**Quick Start Theme System:**
 ```bash
 mkdir -p ~/Wallpapers/{Dark,Light}
 # Add wallpaper images to these directories
-# Then use: Super+W (random), Super+Shift+W (toggle dark/light)
+# Then use: Super+W (random), Super+Shift+W (toggle dark/light), Super+Shift+B (next)
 ```
+
+**Quick Start ROFI Dashboard:**
+```bash
+# Super+Alt+Space opens the dashboard with:
+# - Appearance (wallpaper picker with thumbnails)
+# - Applications manager
+# - System info & shortcuts
+# - Packages quick-install menu
+# - Power menu
+# - And more!
+```
+
+See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for theme system details and [.config/rofi/scripts/](./config/rofi/scripts/) for ROFI script info.
 
 ## Overview
 
@@ -48,12 +61,13 @@ mkdir -p ~/Wallpapers/{Dark,Light}
 | `hyprlock` | `pacman -S hyprlock` | Lock screen (triggered via `Super+L`) |
 | `xorg-xwayland` | `pacman -S xorg-xwayland` | XWayland support for legacy X11 apps |
 
-## 🖼️ Wallpaper & Theming
+## 🖼️ Wallpaper & Theming & Color Syncing
 
 | Package | Install | Description |
 |---------|---------|-------------|
 | `swww` | `yay -S swww` | Animated wallpaper daemon |
 | `python-pywal` | `pacman -S python-pywal` | Generates color schemes from wallpaper (`wal -R`) |
+| `matugen-bin` | `yay -S matugen-bin` | Advanced color sync across apps (GTK, Qt, Kitty, etc.) |
 
 ## 📊 Status Bar (Waybar)
 
@@ -203,12 +217,44 @@ git clone https://github.com/Darkkal44/qylock.git ~/.local/share/quickshell-lock
 chmod +x ~/.local/share/quickshell-lockscreen/lock.sh
 ```
 
-### 4. Set Up Wallpapers
-Create the folder structure for your custom wallpaper switcher:
+### 4. Set Up Wallpapers & Theme System
+
+Create the organized wallpaper folder structure:
 ```bash
-mkdir -p ~/Pictures/Wallpapers/{Anime,Gatcha,Scenery}
+mkdir -p ~/Wallpapers/{Dark,Light}
+# Or customize with your own folders (see THEME_SYSTEM.md)
 ```
-*(Download some images into these folders to use the auto-themer!)*
+
+Add your wallpapers to these folders and use:
+- `Super+W` - Random wallpaper
+- `Super+Shift+W` - Toggle dark/light mode
+- `Super+Shift+B` - Next wallpaper
+
+### 5. Set Up Fastfetch Images
+
+Organize your fastfetch display images:
+```bash
+mkdir -p ~/.config/fastfetch/images/{anime,scenery,abstract,other}
+# Add images to these folders
+# Images will be randomized on each terminal open
+```
+
+See `.config/fastfetch/FASTFETCH_IMAGES.md` for details.
+
+### 6. Explore ROFI Dashboard
+
+Open the ROFI scripts dashboard:
+```bash
+Super+Alt+Space  # Opens main dashboard menu
+```
+
+Features:
+- **Appearance**: Wallpaper picker with thumbnails
+- **Applications**: Quick app launcher
+- **System**: System info and useful shortcuts
+- **Packages**: Pacman/AUR quick-install
+- **Power**: Power menu (shutdown, reboot, suspend)
+- **And more!** (Learn, Tools, Keybinds, AI menu)
 
 ---
 
@@ -216,13 +262,15 @@ mkdir -p ~/Pictures/Wallpapers/{Anime,Gatcha,Scenery}
 
 | Keybind | Action |
 |---------|--------|
-| `Super + Enter` / `Super + R` | App Launcher (Rofi) |
+| `Super + Enter` | App Launcher (Rofi) |
+| `Super + Alt + Space` | ROFI Dashboard Menu |
 | `Super + T` | Open Terminal (Kitty) |
 | `Super + E` | Open File Manager (Dolphin) |
 | `Super + Q` | Close Active Window |
 | `Super + M` | Power Menu (Shutdown / Reboot) |
-| `Super + W` | Wallpaper Switcher & Auto-Themer |
-| `Super + Shift + B` | Switch Waybar Theme |
+| `Super + W` | Random Wallpaper & Auto-Sync Theme |
+| `Super + Shift + W` | Toggle Dark/Light Mode |
+| `Super + Shift + B` | Next Wallpaper |
 | `Super + B` | Toggle Waybar Visibility |
 | `Super + L` | Lock Screen (Qylock) |
 | `Super + V` | Toggle Floating Window |

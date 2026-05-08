@@ -43,7 +43,8 @@ chmod +x ~/.config/waybar/Scripts/*
 chmod +x ~/.config/rofi/launcher.sh
 chmod +x ~/.config/rofi/scripts/*.sh
 chmod +x ~/.config/rofi/scripts/lib/*.sh
-chmod +x ~/.config/cloud-center-v2/*.py ~/.config/cloud-center-v2/*.sh
+chmod +x ~/.config/fastfetch/*.sh
+chmod +x ~/.config/theme_controller.sh
 
 # 6. Install Quickshell Lockscreen
 echo "🔒 Installing Darkkal44's Qylock..."
@@ -55,9 +56,31 @@ chmod +x ~/.local/share/quickshell-lockscreen/lock.sh
 
 # 7. Setup Wallpaper Directories
 echo "🖼️ Setting up Wallpaper directories..."
-mkdir -p ~/Pictures/Wallpapers/{Anime,Gatcha,Scenery}
+mkdir -p ~/Wallpapers/{Dark,Light}
+
+# 8. Setup Fastfetch Image Directories
+echo "🖼️ Setting up Fastfetch image directories..."
+mkdir -p ~/.config/fastfetch/images/{anime,scenery,abstract,other}
+
+# 9. Initialize fastfetch random image
+echo "🎨 Initializing fastfetch image randomizer..."
+~/.config/fastfetch/fastfetch-image-setup.sh &> /dev/null || true
 
 echo "🎉 Installation Complete!"
+echo ""
 echo "➡️  Next steps:"
-echo "1. Put some wallpapers into ~/Pictures/Wallpapers/"
-echo "2. Log out and select 'Hyprland' from your login screen!"
+echo "1. Add wallpapers to ~/Wallpapers/Dark/ and ~/Wallpapers/Light/"
+echo "2. Add images to ~/.config/fastfetch/images/{anime,scenery,abstract,other}/"
+echo "3. Log out and select 'Hyprland' from your login screen!"
+echo ""
+echo "💡 Quick commands:"
+echo "   Super+W              → Random wallpaper + auto-sync theme"
+echo "   Super+Shift+W        → Toggle dark/light mode"
+echo "   Super+Shift+B        → Next wallpaper"
+echo "   Super+Alt+Space      → ROFI Dashboard menu"
+echo "   Super+L              → Lock screen"
+echo ""
+echo "📖 Documentation:"
+echo "   THEME_SYSTEM.md               → Theme system setup guide"
+echo "   .config/fastfetch/FASTFETCH_IMAGES.md → Fastfetch image guide"
+echo "   .config/rofi/scripts/         → ROFI script ecosystem"
