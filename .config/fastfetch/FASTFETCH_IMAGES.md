@@ -11,9 +11,14 @@ Organize your fastfetch images into folders for better randomization and categor
 │   ├── scenery/         # Landscape/nature images
 │   ├── abstract/        # Abstract art
 │   └── other/           # Everything else
-├── config.jsonc         # Fastfetch config (uses image.png symlink)
-├── image.png           # Symlink to random image (auto-managed)
+├── config.jsonc         # Fastfetch config (uses cache-managed current image)
 └── fastfetch-image-setup.sh
+```
+
+The active image is generated at:
+
+```bash
+~/.cache/fastfetch/current-image.png
 ```
 
 ## Setup
@@ -30,23 +35,19 @@ Organize your fastfetch images into folders for better randomization and categor
    ~/.config/fastfetch/fastfetch-image-setup.sh
    ```
 
-3. **Auto-randomize on startup (optional):**
-   
-   Add to your shell rc file (~/.bashrc or ~/.zshrc):
+3. **Auto-randomize on terminal startup:**
+
+   `.zshrc` already does this before running `fastfetch`:
    ```bash
-   # Randomize fastfetch image on shell start
-   ~/.config/fastfetch/fastfetch-image-setup.sh &> /dev/null
-   ```
-   
-   Or add to Hyprland config (~/.config/hypr/hyprland.conf):
-   ```bash
-   exec-once = ~/.config/fastfetch/fastfetch-image-setup.sh
+   ~/.config/fastfetch/fastfetch-image-setup.sh &> /dev/null || true
+   fastfetch
    ```
 
 ## Usage
 
 **Run fastfetch with random image:**
 ```bash
+~/.config/fastfetch/fastfetch-image-setup.sh
 fastfetch
 ```
 
@@ -57,13 +58,14 @@ fastfetch
 
 **View current image:**
 ```bash
-file ~/.config/fastfetch/image.png
+file ~/.cache/fastfetch/current-image.png
 ```
 
 ## Notes
 
-- The `image.png` symlink always points to the current random image
-- `config.jsonc` is unchanged and always reads from `image.png`
+- The `~/.cache/fastfetch/current-image.png` symlink always points to the current random image
+- `config.jsonc` reads from the generated cache path
+- `.zshrc` refreshes the generated image before each automatic `fastfetch` run
 - Run `fastfetch-image-setup.sh` multiple times to cycle through images
 - If no images exist, fastfetch will show no logo
 - Supported formats: .jpg, .png, .gif

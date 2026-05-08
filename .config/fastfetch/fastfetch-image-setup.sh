@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# fastfetch-image-setup.sh — Initialize and link random fastfetch image
+# fastfetch-image-setup.sh — Select the current random fastfetch image
 # =============================================================================
-# Sets up a symlink from ~/.config/fastfetch/image.png to a random image
+# Sets up a symlink from ~/.cache/fastfetch/current-image.png to a random image
 # from the organized folders. Run this at startup or manually.
 
 set -uo pipefail
 
 readonly IMAGES_DIR="${HOME}/.config/fastfetch/images"
-readonly IMAGE_LINK="${HOME}/.config/fastfetch/image.png"
+readonly CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/fastfetch"
+readonly IMAGE_LINK="${CACHE_DIR}/current-image.png"
 declare -a FOLDERS=("anime" "scenery" "abstract" "other")
 
 get_random_image() {
@@ -40,10 +41,8 @@ main() {
         return 1
     }
     
-    # Remove old symlink if it exists
-    if [[ -L "$IMAGE_LINK" ]]; then
-        rm "$IMAGE_LINK"
-    fi
+    mkdir -p "$CACHE_DIR"
+    rm -f "$IMAGE_LINK"
     
     # Create new symlink
     ln -s "$random_image" "$IMAGE_LINK"

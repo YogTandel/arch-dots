@@ -9,6 +9,7 @@ set -uo pipefail
 
 # Image folders (in priority order)
 readonly IMAGES_DIR="${HOME}/.config/fastfetch/images"
+readonly CURRENT_IMAGE="${XDG_CACHE_HOME:-$HOME/.cache}/fastfetch/current-image.png"
 declare -a FOLDERS=("anime" "scenery" "abstract" "other")
 
 # Find all images
@@ -32,9 +33,9 @@ get_random_image() {
         done < <(find "${IMAGES_DIR}" -maxdepth 1 \( -name "*.jpg" -o -name "*.png" -o -name "*.gif" \) -print0)
     fi
     
-    # If still no images, check old location
-    if [[ ${#images[@]} -eq 0 ]] && [[ -f "${HOME}/.config/fastfetch/image.png" ]]; then
-        echo "${HOME}/.config/fastfetch/image.png"
+    # If still no images, fall back to the generated current image
+    if [[ ${#images[@]} -eq 0 ]] && [[ -f "$CURRENT_IMAGE" ]]; then
+        echo "$CURRENT_IMAGE"
         return 0
     fi
     
