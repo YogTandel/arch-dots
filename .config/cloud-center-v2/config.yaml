@@ -1,0 +1,644 @@
+pages:
+- id: home
+  title: Home
+  icon: go-home-symbolic
+  layout:
+  - type: section
+    properties:
+      title: Quick Actions
+    items:
+    - type: toggle
+      properties:
+        title: Dark Mode
+        description: Switch between dark and light Matugen theme
+        icon: weather-clear-night-symbolic
+        key: theme/dark_mode
+      on_toggle:
+        enabled:
+          command: ~/.config/cloud-center-v2/theme_wrapper.sh set --mode dark
+        disabled:
+          command: ~/.config/cloud-center-v2/theme_wrapper.sh set --mode light
+    - type: toggle
+      properties:
+        title: Bluetooth
+        description: Bluetooth adapter power
+        icon: bluetooth-active-symbolic
+        key: hypr/bluetooth
+        state_command: 'bluetoothctl show 2>/dev/null | grep -c ''Powered: yes'' ||
+          echo 0'
+        interval: 5
+      on_toggle:
+        enabled:
+          command: rfkill unblock bluetooth; sleep 0.5; bluetoothctl power on
+        disabled:
+          command: bluetoothctl power off
+    - type: toggle
+      properties:
+        title: Wi-Fi
+        description: Wireless radio
+        icon: network-wireless-signal-good-symbolic
+        key: hypr/wifi
+        state_command: nmcli radio wifi 2>/dev/null | grep -c '^enabled' || echo 0
+        interval: 5
+      on_toggle:
+        enabled:
+          command: nmcli radio wifi on
+        disabled:
+          command: nmcli radio wifi off
+  - type: section
+    properties:
+      title: Maintenance
+    items:
+    - type: button
+      properties:
+        title: System Update
+        description: Run Arch Linux system updater
+        icon: software-update-available-symbolic
+        button_text: Update
+      on_press:
+        command: kitty -e yay -Syu
+        terminal: true
+    - type: button
+      properties:
+        title: Reload Hyprland
+        description: Reload Hyprland configuration
+        icon: view-refresh-symbolic
+        button_text: Reload
+      on_press:
+        command: hyprctl reload
+  - type: section
+    properties:
+      title: System
+    items:
+    - type: label
+      properties:
+        title: CPU
+        icon: computer-symbolic
+      value:
+        type: system
+        key: cpu
+    - type: label
+      properties:
+        title: GPU
+        icon: video-display-symbolic
+      value:
+        type: system
+        key: gpu
+    - type: label
+      properties:
+        title: Memory Used
+        icon: drive-harddisk-symbolic
+        interval: 5
+      value:
+        type: system
+        key: memory_used
+    - type: label
+      properties:
+        title: Kernel
+        icon: null
+      value:
+        type: system
+        key: kernel
+- id: appearance
+  title: Appearance
+  icon: preferences-desktop-appearance-symbolic
+  layout:
+  - type: section
+    properties:
+      title: Theme
+    items:
+    - type: selection
+      properties:
+        title: Color Scheme
+        description: Matugen color variant
+        icon: preferences-color-symbolic
+        key: theme/scheme
+        options:
+        - neutral
+        - vibrant
+        - monochrome
+        - rainbow
+        - expressive
+        - fruit-salad
+        - tonal-spot
+        - fidelity
+        - content
+        options_map:
+          neutral: scheme-neutral
+          vibrant: scheme-vibrant
+          monochrome: scheme-monochrome
+          rainbow: scheme-rainbow
+          expressive: scheme-expressive
+          fruit-salad: scheme-fruit-salad
+          tonal-spot: scheme-tonal-spot
+          fidelity: scheme-fidelity
+          content: scheme-content
+      on_change:
+        command: ~/.config/cloud-center-v2/theme_wrapper.sh refresh {value} $(cat
+          ~/.config/cloud-center/settings/theme/contrast 2>/dev/null || echo 0)
+    - type: slider
+      properties:
+        title: Contrast
+        description: Matugen contrast adjustment (-1.0 to +1.0)
+        icon: display-brightness-symbolic
+        key: theme/contrast
+        min: -10
+        max: 10
+        step: 1
+        default: 0
+      on_change:
+        command: ~/.config/cloud-center-v2/theme_wrapper.sh refresh $(cat ~/.config/cloud-center/settings/theme/scheme
+          2>/dev/null || echo neutral) $(echo "scale=1; {value}/10" | bc)
+    - type: button
+      properties:
+        title: Apply Theme
+        description: Re-run Matugen with current settings
+        icon: view-refresh-symbolic
+        button_text: Apply
+      on_press:
+        command: ~/.config/cloud-center-v2/theme_wrapper.sh refresh
+  - type: section
+    properties:
+      title: Wallpaper
+    items:
+    - type: wallpaper_picker
+      properties:
+        title: Wallpaper
+        description: Click a wallpaper to apply it
+        icon: preferences-desktop-wallpaper-symbolic
+        key: wallpaper/current
+        directory: ~/Wallpapers
+        thumbnail_size: 120
+        columns: 4
+      on_select:
+        command: ~/.config/cloud-center-v2/theme_wrapper.sh set-image {path}
+  - type: section
+    properties:
+      title: Online Wallpapers
+      description: Browse and download from online wallpaper sources
+    items:
+    - type: online_wallpaper_browser
+      properties:
+        title: Wallpaper Browser
+        description: Browse and download wallpapers
+        light_directory: ~/Wallpapers/Light
+        dark_directory: ~/Wallpapers/Dark
+        wallpapershome_base: https://wallpapershome.com
+        height: 420
+  - type: section
+    properties:
+      title: Distro Defaults
+      description: Reset Appearance page to distro defaults
+    items:
+    - type: button
+      properties:
+        title: Use Distro Defaults
+        description: Clear saved theme choices and regenerate from defaults
+        icon: edit-clear-symbolic
+        button_text: Reset
+      on_press:
+        command: rm -rf ~/.config/cloud-center/settings/theme && ~/.config/cloud-center-v2/theme_wrapper.sh
+          refresh neutral 0
+- id: input
+  title: Input
+  icon: input-keyboard-symbolic
+  layout:
+  - type: section
+    properties:
+      title: Keyboard
+      description: Layout and repeat behavior
+    items:
+    - type: multi_selection
+      properties:
+        title: Keyboard Layout
+        description: XKB layouts (select one or more)
+        icon: input-keyboard-symbolic
+        key: input/kb_layout
+        options:
+        - us
+        - gb
+        - de
+        - fr
+        - es
+        - it
+        - ru
+        - ua
+        - pl
+        - cz
+        - sk
+        - tr
+        - se
+        - false
+        - fi
+        - dk
+        - nl
+        - be
+        - pt
+        - br
+        - ro
+        - hu
+        - hr
+        - rs
+        - bg
+        - gr
+        - il
+        - ara
+        - in
+        - jp
+        - kr
+        - cn
+      on_change:
+        command: hyprctl keyword input:kb_layout {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:kb_layout {value}
+    - type: selection
+      properties:
+        title: Keyboard Variant
+        description: XKB variant
+        icon: preferences-desktop-keyboard-symbolic
+        key: input/kb_variant
+        options:
+        - basic
+        - intl
+        - altgr-intl
+        - dvorak
+        - colemak
+        options_map:
+          basic: ''
+          intl: intl
+          altgr-intl: altgr-intl
+          dvorak: dvorak
+          colemak: colemak
+      on_change:
+        command: V="{value}"; [ "$V" = "basic" ] && V=""; hyprctl keyword input:kb_variant
+          "$V" && ~/.config/cloud-center-v2/hypr_persist.sh input:kb_variant "$V"
+    - type: slider
+      properties:
+        title: Repeat Delay
+        description: Delay before key repeat starts (ms)
+        icon: media-playback-pause-symbolic
+        key: input/repeat_delay
+        min: 150
+        max: 1000
+        step: 10
+        default: 300
+      on_change:
+        command: hyprctl keyword input:repeat_delay {value_i} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:repeat_delay {value_i}
+    - type: slider
+      properties:
+        title: Repeat Rate
+        description: Key repeats per second
+        icon: media-playback-start-symbolic
+        key: input/repeat_rate
+        min: 10
+        max: 80
+        step: 1
+        default: 30
+      on_change:
+        command: hyprctl keyword input:repeat_rate {value_i} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:repeat_rate {value_i}
+    - type: toggle
+      properties:
+        title: NumLock by Default
+        description: Enable NumLock on session start
+        icon: preferences-desktop-keyboard-symbolic
+        key: input/numlock_by_default
+      on_toggle:
+        enabled:
+          command: hyprctl keyword input:numlock_by_default true && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:numlock_by_default true
+        disabled:
+          command: hyprctl keyword input:numlock_by_default false && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:numlock_by_default false
+  - type: section
+    properties:
+      title: Mouse
+      description: Pointer behavior and acceleration
+    items:
+    - type: slider
+      properties:
+        title: Sensitivity
+        description: Pointer sensitivity (-1.00 to 1.00)
+        icon: input-mouse-symbolic
+        key: input/sensitivity
+        min: -100
+        max: 100
+        step: 1
+        default: 0
+      on_change:
+        command: V=$(awk 'BEGIN { printf "%.2f", ({value}) / 100 }') && hyprctl keyword
+          input:sensitivity $V && ~/.config/cloud-center-v2/hypr_persist.sh input:sensitivity
+          $V
+    - type: selection
+      properties:
+        title: Acceleration Profile
+        description: Mouse acceleration profile
+        icon: input-mouse-symbolic
+        key: input/accel_profile
+        options:
+        - adaptive
+        - flat
+      on_change:
+        command: hyprctl keyword input:accel_profile {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:accel_profile {value}
+    - type: selection
+      properties:
+        title: Follow Mouse
+        description: Focus follows mouse behavior
+        icon: focus-windows-symbolic
+        key: input/follow_mouse
+        options:
+        - disabled
+        - enabled
+        - always
+        options_map:
+          disabled: 0
+          enabled: 1
+          always: 2
+      on_change:
+        command: hyprctl keyword input:follow_mouse {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:follow_mouse {value}
+  - type: section
+    properties:
+      title: Touchpad
+      description: Touchpad scrolling and click behavior
+      requires_touchpad: true
+    items:
+    - type: toggle
+      properties:
+        title: Natural Scroll
+        description: Reverse scroll direction
+        icon: input-touchpad-symbolic
+        key: input/touchpad_natural_scroll
+      on_toggle:
+        enabled:
+          command: hyprctl keyword input:touchpad:natural_scroll true && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:natural_scroll true
+        disabled:
+          command: hyprctl keyword input:touchpad:natural_scroll false && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:natural_scroll false
+    - type: toggle
+      properties:
+        title: Disable While Typing
+        description: Prevent accidental palm movement while typing
+        icon: input-touchpad-symbolic
+        key: input/touchpad_disable_while_typing
+      on_toggle:
+        enabled:
+          command: hyprctl keyword input:touchpad:disable_while_typing true && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:disable_while_typing true
+        disabled:
+          command: hyprctl keyword input:touchpad:disable_while_typing false && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:disable_while_typing false
+    - type: toggle
+      properties:
+        title: Tap to Click
+        description: Tap the touchpad to click
+        icon: input-touchpad-symbolic
+        key: input/touchpad_tap_to_click
+      on_toggle:
+        enabled:
+          command: hyprctl keyword input:touchpad:tap-to-click true && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:tap-to-click true
+        disabled:
+          command: hyprctl keyword input:touchpad:tap-to-click false && ~/.config/cloud-center-v2/hypr_persist.sh
+            input:touchpad:tap-to-click false
+    - type: selection
+      properties:
+        title: Clickfinger Behavior
+        description: Multi-finger click mapping
+        icon: input-touchpad-symbolic
+        key: input/touchpad_clickfinger_behavior
+        options:
+        - disabled
+        - enabled
+        options_map:
+          disabled: false
+          enabled: true
+      on_change:
+        command: hyprctl keyword input:touchpad:clickfinger_behavior {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          input:touchpad:clickfinger_behavior {value}
+    - type: toggle
+      properties:
+        title: Middle Button Emulation
+        description: Emulate middle click with combined tap
+        icon: input-touchpad-symbolic
+        key: input/touchpad_middle_button_emulation
+      on_toggle:
+        enabled:
+          command: hyprctl keyword input:touchpad:middle_button_emulation true &&
+            ~/.config/cloud-center-v2/hypr_persist.sh input:touchpad:middle_button_emulation
+            true
+        disabled:
+          command: hyprctl keyword input:touchpad:middle_button_emulation false &&
+            ~/.config/cloud-center-v2/hypr_persist.sh input:touchpad:middle_button_emulation
+            false
+    - type: slider
+      properties:
+        title: Scroll Factor
+        description: Touchpad scroll multiplier (0.50 to 2.00)
+        icon: input-touchpad-symbolic
+        key: input/touchpad_scroll_factor
+        min: 50
+        max: 200
+        step: 1
+        default: 100
+      on_change:
+        command: V=$(echo "scale=2; {value}/100" | bc) && hyprctl keyword input:touchpad:scroll_factor
+          $V && ~/.config/cloud-center-v2/hypr_persist.sh input:touchpad:scroll_factor
+          $V
+  - type: section
+    properties:
+      title: Distro Defaults
+      description: Reset Input page to distro defaults
+    items:
+    - type: button
+      properties:
+        title: Use Distro Defaults
+        description: Remove Cloud Center input overrides from Hyprland
+        icon: edit-clear-symbolic
+        button_text: Reset
+      on_press:
+        command: ~/.config/cloud-center-v2/hypr_persist.sh reset-page input
+- id: hyprland
+  title: Hyprland
+  icon: applications-science-symbolic
+  layout:
+  - type: section
+    properties:
+      title: Window Decoration
+    items:
+    - type: slider
+      properties:
+        title: Border Size
+        description: Window border width in pixels
+        icon: view-grid-symbolic
+        key: hypr/border_size
+        min: 0
+        max: 10
+        step: 1
+        default: 2
+      on_change:
+        command: hyprctl keyword general:border_size {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          general:border_size {value}
+    - type: slider
+      properties:
+        title: Corner Rounding
+        description: Window corner radius
+        icon: zoom-fit-best-symbolic
+        key: hypr/rounding
+        min: 0
+        max: 20
+        step: 1
+        default: 8
+      on_change:
+        command: hyprctl keyword decoration:rounding {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          decoration:rounding {value}
+    - type: toggle
+      properties:
+        title: Blur
+        description: Background blur on transparent windows
+        icon: camera-photo-symbolic
+        key: hypr/blur
+      on_toggle:
+        enabled:
+          command: hyprctl keyword decoration:blur:enabled true && ~/.config/cloud-center-v2/hypr_persist.sh
+            decoration:blur:enabled true
+        disabled:
+          command: hyprctl keyword decoration:blur:enabled false && ~/.config/cloud-center-v2/hypr_persist.sh
+            decoration:blur:enabled false
+    - type: slider
+      properties:
+        title: Blur Passes
+        description: More passes = stronger blur, more GPU cost
+        icon: camera-photo-symbolic
+        key: hypr/blur_passes
+        min: 1
+        max: 6
+        step: 1
+        default: 3
+      on_change:
+        command: hyprctl keyword decoration:blur:passes {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          decoration:blur:passes {value}
+    - type: slider
+      properties:
+        title: Blur Size
+        description: Blur kernel size
+        icon: zoom-in-symbolic
+        key: hypr/blur_size
+        min: 1
+        max: 20
+        step: 1
+        default: 8
+      on_change:
+        command: hyprctl keyword decoration:blur:size {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          decoration:blur:size {value}
+    - type: slider
+      properties:
+        title: Window Opacity (Active)
+        description: Active window opacity (100 = fully opaque)
+        icon: display-brightness-symbolic
+        key: hypr/active_opacity
+        min: 50
+        max: 100
+        step: 1
+        default: 100
+      on_change:
+        command: V=$(echo "scale=2; {value}/100" | bc) && hyprctl keyword decoration:active_opacity
+          $V && ~/.config/cloud-center-v2/hypr_persist.sh decoration:active_opacity
+          $V
+    - type: slider
+      properties:
+        title: Window Opacity (Inactive)
+        description: Inactive window opacity
+        icon: display-brightness-symbolic
+        key: hypr/inactive_opacity
+        min: 50
+        max: 100
+        step: 1
+        default: 95
+      on_change:
+        command: V=$(echo "scale=2; {value}/100" | bc) && hyprctl keyword decoration:inactive_opacity
+          $V && ~/.config/cloud-center-v2/hypr_persist.sh decoration:inactive_opacity
+          $V
+  - type: section
+    properties:
+      title: Layout &amp; Gaps
+    items:
+    - type: slider
+      properties:
+        title: Outer Gaps
+        description: Gaps between windows and screen edge
+        icon: view-grid-symbolic
+        key: hypr/gaps_out
+        min: 0
+        max: 60
+        step: 2
+        default: 8
+      on_change:
+        command: hyprctl keyword general:gaps_out {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          general:gaps_out {value}
+    - type: slider
+      properties:
+        title: Inner Gaps
+        description: Gaps between windows
+        icon: view-grid-symbolic
+        key: hypr/gaps_in
+        min: 0
+        max: 30
+        step: 2
+        default: 4
+      on_change:
+        command: hyprctl keyword general:gaps_in {value} && ~/.config/cloud-center-v2/hypr_persist.sh
+          general:gaps_in {value}
+  - type: section
+    properties:
+      title: Animations
+    items:
+    - type: toggle
+      properties:
+        title: Animations
+        description: Enable Hyprland window animations
+        icon: media-playback-start-symbolic
+        key: hypr/animations
+      on_toggle:
+        enabled:
+          command: hyprctl keyword animations:enabled true && ~/.config/cloud-center-v2/hypr_persist.sh
+            animations:enabled true
+        disabled:
+          command: hyprctl keyword animations:enabled false && ~/.config/cloud-center-v2/hypr_persist.sh
+            animations:enabled false
+    - type: slider
+      properties:
+        title: Animation Speed
+        description: "Lower = faster (runtime only \u2014 bezier curves can't be expressed\
+          \ as a simple conf value)"
+        icon: media-playlist-shuffle-symbolic
+        key: hypr/anim_speed
+        min: 1
+        max: 10
+        step: 1
+        default: 4
+      on_change:
+        command: hyprctl keyword animations:bezier "myBezier,0.05,0.9,0.1,1.05" &&
+          hyprctl keyword animations:animation "windows,1,{value},myBezier"
+    - type: button
+      properties:
+        title: Bezier Curve Editor
+        description: Visually design and apply custom easing curves to Hyprland animations
+        icon: media-playback-start-symbolic
+        button_text: Open
+        action: bezier_editor
+  - type: section
+    properties:
+      title: Distro Defaults
+      description: Reset Hyprland page overrides to distro defaults
+    items:
+    - type: button
+      properties:
+        title: Use Distro Defaults
+        description: Remove all Cloud Center Hyprland visual overrides
+        icon: edit-clear-symbolic
+        button_text: Reset
+      on_press:
+        command: ~/.config/cloud-center-v2/hypr_persist.sh reset-page hyprland

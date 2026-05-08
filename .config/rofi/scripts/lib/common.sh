@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+# =============================================================================
+# lib/common.sh — Shared config & utilities for all rofi menu scripts
+# Source this file at the top of every menu script:
+#   source "${ROFI_DIR}/lib/common.sh"
+# =============================================================================
+
+# --- PATHS ---
+readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
+readonly THEME_CTL="${HOME}/.config/cloud-center-v2/theme_wrapper.sh"
+readonly BASE_WALL_DIR="${HOME}/Pictures/Wallpapers"
+readonly CACHE_DIR="${HOME}/.cache/rofi_thumbs"
+
+# --- WALLPAPER THUMB SETTINGS ---
+readonly THUMB_SIZE=250
+readonly MAX_JOBS=$(nproc)
+readonly TEMP_INPUT="/tmp/rofi_input_$$"
+
+trap 'rm -f "$TEMP_INPUT"' EXIT INT TERM
+
+# --- ROFI DEFAULTS ---
+readonly ROFI_CMD=(
+  rofi
+  -dmenu
+  -i
+  -theme "${HOME}/.config/rofi/config.rasi"
+  -theme-str 'window { width: 28%; }'
+  -theme-str 'listview { lines: 12; }'
+)
+
+# --- LOGGING ---
+log() { printf '\033[1;34m[ROFI]\033[0m %s\n' "$*" >&2; }
+
+# =============================================================================
+# UTILITY FUNCTIONS
+# =============================================================================
+
+init_dirs() {
+  mkdir -p "$CACHE_DIR" "$BASE_WALL_DIR"
+}
+
+# Standard dmenu prompt with optional preselect
+menu() {
+  local prompt="$1"
+  local options="$2"
+  local extra_args=("${@:3}")
+  printf "%b" "$options" | "${ROFI_CMD[@]}" -p "$prompt" "${extra_args[@]}"
+}
+
+# Centred floating menu (confirmations, etc.)
+centered_menu() {
+  local prompt="$1"
+  local options="$2"
+  printf "%b" "$options" | rofi -dmenu -i -p "$prompt" \
+    -theme "${HOME}/.config/rofi/config.rasi" \
+    -theme-str 'window { location: center; anchor: center; width: 450px; }' \
+    -theme-str 'listview { lines: 8; }' \
+    -theme-str 'element { padding: 12px; }' \
+    -theme-str 'element-text { font: "JetBrainsMono Nerd Font 12"; }'
+}
+
+# Fire-and-forget launcher
+run_app() {
+  if command -v uwsm-app >/dev/null 2>&1; then
+    nohup uwsm-app -- "$@" >/dev/null 2>&1 &
+  else
+    nohup "$@" >/dev/null 2>&1 &
+  fi
+  disown
+}
+
+# Return to the main dashboard
+back_to_main() {
+  exec "${ROFI_DIR}/main.sh"
+}
+
+# =============================================================================
+# THEME / MODE HELPERS
+# =============================================================================
+
+get_current_mode() {
+  local state_file="${HOME}/.config/cloud-center/settings/theme/mode"
+  local raw_mode
+  raw_mode=$(cat "$state_file" 2>/dev/null || echo "dark")
+  raw_mode=$(echo "$raw_mode" | tr -d '[:space:]')
+  [[ "$raw_mode" != "light" && "$raw_mode" != "dark" ]] && raw_mode="dark"
+  echo "$raw_mode"
+}

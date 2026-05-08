@@ -23,12 +23,13 @@ sudo pacman -S --needed --noconfirm hyprland hyprlock xorg-xwayland python-pywal
   pavucontrol playerctl power-profiles-daemon network-manager-applet pipewire \
   pipewire-pulse pipewire-alsa wireplumber brightnessctl wl-clipboard dolphin kitty \
   zsh starship fzf zsh-autosuggestions zsh-syntax-highlighting fastfetch \
-  ttf-jetbrains-mono-nerd
+  ttf-jetbrains-mono-nerd imagemagick gtk4 libadwaita python-gobject python-yaml
 
 # 3. Install AUR packages
 echo "📦 Installing AUR Packages..."
 yay -S --needed --noconfirm swww swaync cava cliphist rofi-wayland hyprshot \
-  zsh-fast-syntax-highlighting iwdgui libva-nvidia-driver matugen-bin
+  zsh-fast-syntax-highlighting iwdgui libva-nvidia-driver matugen-bin \
+  quickshell-git ttf-material-symbols-variable-git
 
 # 4. Copy Configurations
 echo "📂 Copying configuration files..."
@@ -38,8 +39,11 @@ cp ~/.config/zsh/.zshrc ~/.zshrc
 
 # 5. Make custom scripts executable
 echo "🔑 Setting permissions..."
-chmod +x ~/.config/waybar/Scripts/*.sh
+chmod +x ~/.config/waybar/Scripts/*
 chmod +x ~/.config/rofi/launcher.sh
+chmod +x ~/.config/rofi/scripts/*.sh
+chmod +x ~/.config/rofi/scripts/lib/*.sh
+chmod +x ~/.config/cloud-center-v2/*.py ~/.config/cloud-center-v2/*.sh
 
 # 6. Install Quickshell Lockscreen
 echo "🔒 Installing Darkkal44's Qylock..."

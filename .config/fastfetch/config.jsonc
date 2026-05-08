@@ -1,119 +1,98 @@
-//   _____ _____ _____ _____ _____ _____ _____ _____ _____ 
-//  |   __|  _  |   __|_   _|   __|   __|_   _|     |  |  |
-//  |   __|     |__   | | | |   __|   __| | | |   --|     |
-//  |__|  |__|__|_____| |_| |__|  |_____| |_| |_____|__|__|  HYPRLAND
-//
-//  by sm0kii
 {
-    "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
-    "logo": {
-        "source": "~/.config/fastfetch/images/arch.png",
-        "type": "kitty-direct",
-        "height": 18,
-        "padding": {
-            "top": 2
-        }
-    },
-    "display": {
-        "separator": " "
-    },
-    "modules": [
-        {
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
-        },
-        "break",
-        {
-            "type": "title",
-            "keyWidth": 10
-        },
-        "break",
-        {
-            "type": "os",
-            "key": " ",
-            "keyColor": "34" // = color4
-        },
-        {
-            "type": "kernel",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "packages",
-            "format": "{} (pacman)",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "shell",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "terminal",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "wm",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "display",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "cpu",
-            "format": "{1}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "gpu",
-            "format": "{2}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "gpu",
-            "format": "{3}",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "memory",
-            "key": "󰍛 ",
-            "keyColor": "34"
-        },
-        {
-            "type": "swap",
-            "key": "󰾴 ",
-            "keyColor": "34"
-        },
-        {
-            "type": "disk",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "uptime",
-            "key": " ",
-            "keyColor": "34"
-        },
-        {
-            "type": "command",
-            "key": "󱦟 ",
-            "keyColor": "34",
-            "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo $days_difference days"
-        },
-        "break",
-        {
-            "type": "custom",
-            "format": "\u001b[90m  \u001b[31m  \u001b[32m  \u001b[33m  \u001b[34m  \u001b[35m  \u001b[36m  \u001b[37m"
-        },
-        "break",
-        "break"
-    ]
+"$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+"logo": {
+  "source": "~/.config/fastfetch/image.png",
+  "type": "kitty",
+  "height": 15,
+  "width": 55,
+  "padding": {
+    "top": 5
+    }
+  },
+"display": {
+  "separator": " │ "
+},
+
+"modules": [
+  "break",
+  {
+    "type": "custom",
+    "format": "╭───────────╮",
+    "outputColor": "35"
+  },
+  {
+    "type": "title",
+    "key": "│  user   ",
+    "keyColor": "35",
+    "format": "{1}"
+  },
+  {
+    "type": "title",
+    "key": "│ 󰒋 hname  ",
+    "keyColor": "35",
+    "format": "{2}"
+  },
+  {
+    "type": "os",
+    "key": "│ 󰔠 os age ",
+    "keyColor": "35",
+    "format": "{4}"
+  },
+  {
+    "type": "uptime",
+    "key": "│ 󰅐 uptime ",
+    "keyColor": "35"
+  },
+  {
+    "type": "os",
+    "key": "│ 󰣇 distro ",
+    "keyColor": "35"
+  },
+  {
+    "type": "kernel",
+    "key": "│  kernel ",
+    "keyColor": "35"
+  },
+  {
+    "type": "wm",
+    "key": "│ 󰨇 wm     ",
+    "keyColor": "35"
+  },
+  {
+    "type": "terminal",
+    "key": "│  term   ",
+    "keyColor": "35"
+  },
+  {
+    "type": "shell",
+    "key": "│  shell  ",
+    "keyColor": "35"
+  },
+  {
+    "type": "memory",
+    "key": "│  memory ",
+    "keyColor": "35"
+  },
+  {
+    "type": "custom",
+    "format": "╰───────────╯",
+    "outputColor": "35"
+  },
+  {
+    "type": "custom",
+    "format": "╭───────────╮",
+    "outputColor": "35"
+  },
+  {
+    "type": "colors",
+    "key": "│ { colors ",
+    "keyColor": "35",
+    "symbol": "circle"
+  },
+  {
+    "type": "custom",
+    "format": "╰───────────╯",
+    "outputColor": "35"
+  }
+]
 }

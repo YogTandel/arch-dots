@@ -1,0 +1,72 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+  "positionX": "right",
+  "positionY": "top",
+  "layer": "overlay",
+  "fit-to-screen": false,
+  "control-center-margin-top": 10,
+  "control-center-margin-right": 20,
+  "control-center-width": 380,
+  "control-center-height": 800,
+  "notification-icon-size": 64,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
+  "timeout": 5,
+  "layer-shell": true,
+  "layer_shell_cover_screen": false,
+  "ignore-gtk-theme": true,
+  "widgets": [
+    "title",
+    "buttons-grid",
+    "dnd",
+    "notifications"
+  ],
+  "widget-config": {
+    "title": {
+      "text": "Control Center",
+      "clear-all-button": true,
+      "button-text": "Clear"
+    },
+    "dnd": {
+      "label": "󰂛"
+    },
+    "buttons-grid": {
+      "actions": [
+        {
+          "label": "󰖩",
+          "type": "toggle",
+          "command": "nm-connection-editor"
+        },
+        {
+          "label": "",
+          "type": "toggle",
+          "command": "blueman-manager"
+        },
+        {
+          "label": "󱐋",
+          "command": "~/.config/waybar/Scripts/wallpaper-picker.sh"
+        },
+        {
+          "label": "󰸉",
+          "command": "~/.config/rofi/scripts/appearance.sh --select"
+        },
+        {
+          "label": "",
+          "command": "hyprpicker"
+        },
+        {
+          "label": "󱩌",
+          "command": "~/.config/cloud-center-v2/theme_wrapper.sh set --mode toggle"
+        },
+        {
+          "label": "󰘴",
+          "command": "python3 $HOME/.config/cloud-center-v2/cloud-center.py"
+        },
+        {
+          "label": "󰐥",
+          "command": "~/.config/rofi/scripts/power-menu.sh"
+        }
+      ]
+    }
+  }
+}

@@ -67,3 +67,6 @@ autoload -Uz compinit && compinit
 # --- Enable Starship Prompt (MUST BE LAST LINE) ---
 eval "$(starship init zsh)"
 
+# Run fastfetch when a new terminal opens
+fastfetch
+

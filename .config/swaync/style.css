@@ -1,0 +1,215 @@
+/* =====================================================================
+   1. IMPORTS & VARIABLES
+   ===================================================================== */
+@import url("../matugen/generated/colors-swaync.css");
+
+@define-color background-color @surface;
+@define-color background-alt-color @surface_container;
+@define-color text-color @on_surface;
+@define-color text-sub-color @on_surface_variant;
+
+@define-color accent-color @primary;
+@define-color on-accent-color @on_primary;
+
+@define-color urgent-color @error;
+@define-color on-urgent-color @on_error;
+
+@define-color hover-color @surface_container_highest;
+@define-color shadow-color @shadow;
+
+
+/* =====================================================================
+   2. GLOBAL RESETS
+   ===================================================================== */
+* {
+  all: unset;
+  font-family: "JetBrainsMono Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  /* 
+   * DO NOT put transition here — applying it to every element forces GTK
+   * to recalculate/repaint the entire widget tree on any state change.
+   * That was the 10% CPU spike. Transitions are applied only where needed.
+   */
+}
+
+/* =====================================================================
+   3. CONTROL CENTER SHELL
+   ===================================================================== */
+.control-center {
+  background: alpha(@cc-bg, 0.85);
+  border-radius: 24px;
+  border: 1px solid @rim-light;
+  padding: 18px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  /*
+   * backdrop-filter: blur() forces a full compositor repaint of everything
+   * behind the panel on every damage event. On Hyprland this can cause
+   * continuous redraws. If you want blur, configure it in hyprland.conf
+   * via windowrule instead (blur = true for the swaync layer surface).
+   * Leaving it here but commented — uncomment only if your compositor
+   * handles it efficiently.
+   */
+  /* backdrop-filter: blur(12px); */
+}
+
+.widget-box {
+  background: transparent;
+  padding: 0;
+}
+
+/* =====================================================================
+   4. HEADERS & TITLES
+   ===================================================================== */
+.widget-title {
+  margin: 0 0 12px 0;
+  color: @text-primary;
+}
+
+.widget-title > button {
+  background: alpha(@button-bg, 0.2);
+  border: 1px solid @rim-light;
+  border-radius: 12px;
+  padding: 8px 16px;
+  color: @text-primary;
+  font-weight: 700;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.widget-title > button:hover {
+  background: alpha(@button-bg, 0.4);
+}
+
+/* =====================================================================
+   5. BUTTON GRID (Quick Toggles)
+   ===================================================================== */
+.widget-buttons-grid {
+  background: transparent;
+  margin: 0 0 16px 0;
+  padding: 0;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button {
+  background: alpha(@surface, 0.45);
+  border-radius: 16px;
+  margin: 4px;
+  min-width: 70px;
+  min-height: 60px;
+  border: 1px solid transparent;
+  color: @text-secondary;
+  font-size: 20px;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button:hover {
+  background: alpha(@surface, 0.5);
+  border-color: @rim-light;
+}
+
+.widget-buttons-grid > flowbox > flowboxchild > button.toggle:checked {
+  background: @primary;
+  color: @on-primary;
+  border: 1px solid @primary;
+  box-shadow: 0 0 15px alpha(@primary, 0.7);
+}
+
+/* =====================================================================
+   7. NOTIFICATIONS
+   ===================================================================== */
+.notification-row {
+  outline: none;
+  margin: 6px 0;
+}
+
+.notification {
+  background: alpha(@surface, 0.9);
+  border-radius: 18px;
+  padding: 14px;
+  border: 1px solid @rim-light;
+  box-shadow: 0 1px 2px @shadow;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification:hover {
+  background: alpha(@surface, 0.6);
+  box-shadow: 0 6px 12px @shadow;
+}
+
+.notification .app-name {
+  font-size: 11px;
+  color: @text-secondary;
+  margin-bottom: 6px;
+}
+
+.notification .summary {
+  font-size: 15px;
+  font-weight: 700;
+  color: @text-primary;
+}
+
+.notification .body {
+  color: alpha(@text-primary, 0.8);
+}
+
+/* =====================================================================
+   8. SPECIAL THEMED NOTIFICATIONS
+   ===================================================================== */
+.notification[data-app-name="Spotify"] {
+  background: linear-gradient(135deg, alpha(@surface, 0.5), alpha(@primary, 0.15));
+  border: 1px solid alpha(@primary, 0.5);
+}
+
+.notification.critical {
+  background: alpha(@error, 0.15);
+  border: 1px solid @error;
+  box-shadow: 0 0 10px alpha(@error, 0.2);
+}
+
+.notification[data-app-name="discord"] {
+  border-left: 4px solid #5865F2;
+}
+
+/* =====================================================================
+   9. DND
+   ===================================================================== */
+.widget-dnd {
+  margin: 0 0 16px 0;
+  background: alpha(@surface, 0.3);
+  padding: 8px;
+  border-radius: 14px;
+}
+
+.widget-dnd > switch {
+  background: alpha(@surface, 0.5);
+  border-radius: 12px;
+  transition: background 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.widget-dnd > switch:checked {
+  background: @primary;
+}
+
+.widget-dnd > switch slider {
+  background: @on-primary;
+  border-radius: 12px;
+}
+
+/*
+ * NOTE: The old rule suppressing volume OSD notifications via
+ * notification[app-name="Volume"] { display: none } does not work —
+ * swaync does not expose app-name as a CSS attribute selector. Those
+ * notifications are controlled in swaync config via "scripts" or by
+ * configuring swayosd/dunst to suppress them at the source instead.
+ * If you want to suppress swayosd popups appearing in swaync, set a
+ * "notification-visibility" rule in config.json:
+ *
+ * "notification-visibility": {
+ *   "volume-osd": {
+ *     "state": "ignored",
+ *     "app-name": "Volume"
+ *   }
+ * }
+ */

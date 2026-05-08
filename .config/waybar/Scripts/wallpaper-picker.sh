@@ -1,58 +1,90 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Directory where wallpapers are stored
+# Directories
 WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+CACHE_DIR="$HOME/.cache/wallpaper-thumbnails"
 
-# Check if directory exists
+# Ensure directories exist
+mkdir -p "$CACHE_DIR"
+
 if [ ! -d "$WALLPAPER_DIR" ]; then
-    rofi -e "Wallpaper directory not found: $WALLPAPER_DIR"
+    notify-send "Wallpaper Picker" "Please create $WALLPAPER_DIR"
     exit 1
 fi
 
-# Step 1: Select Category (subdirectories inside WALLPAPER_DIR)
+# Select category first (text list)
 categories=$(find "$WALLPAPER_DIR" -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
-
 if [ -z "$categories" ]; then
-    rofi -e "No categories (folders) found in $WALLPAPER_DIR"
+    # If no subdirectories, use root
+    SELECTED_DIR="$WALLPAPER_DIR"
+else
+    # Let user pick category
+    selected_category=$(echo "$categories" | rofi -dmenu -theme ~/.config/rofi/config.rasi -i -p "Folder pick wallpaper...")
+    if [ -z "$selected_category" ]; then
+        exit 0
+    fi
+    SELECTED_DIR="$WALLPAPER_DIR/$selected_category"
+fi
+
+# Generate thumbnails and build Rofi list
+TEMP_INPUT=$(mktemp)
+declare -A wallpaper_paths
+
+# Only show notification if we actually have to generate thumbnails
+notify-send "Wallpaper Picker" "Loading thumbnails..." -t 1500
+
+while IFS= read -r -d '' img; do
+    basename_img="$(basename "$img")"
+    hash=$(echo -n "$img" | md5sum | cut -d' ' -f1)
+    thumb="${CACHE_DIR}/${hash}.png"
+
+    # Generate thumbnail if it doesn't exist
+    if [ ! -f "$thumb" ]; then
+        magick "${img}[0]" -strip -resize "200x200^" -gravity center -extent "200x200" -quality 85 "$thumb" 2>/dev/null
+    fi
+
+    if [ -f "$thumb" ]; then
+        echo -en "${basename_img}\0icon\x1f${thumb}\n" >> "$TEMP_INPUT"
+        wallpaper_paths["$basename_img"]="$img"
+    fi
+done < <(find "$SELECTED_DIR" -maxdepth 1 -type f \( -iname "*.jpg" -o -iname "*.png" -o -iname "*.webp" \) -print0 | sort -z)
+
+if [ ! -s "$TEMP_INPUT" ]; then
+    notify-send "Wallpaper Picker" "No images found in $SELECTED_DIR"
+    rm -f "$TEMP_INPUT"
     exit 1
 fi
 
-# Use rofi to select a category
-selected_category=$(echo "$categories" | rofi -dmenu -i -p "Folder pick wallpaper...")
+# Show Rofi with thumbnails!
+selection=$(rofi -dmenu -i -p "Select Wallpaper" -theme ~/.config/rofi/wallpaper.rasi -show-icons < "$TEMP_INPUT")
 
-if [ -z "$selected_category" ]; then
-    exit 0
+rm -f "$TEMP_INPUT"
+
+if [ -n "$selection" ] && [ -n "${wallpaper_paths[$selection]}" ]; then
+    chosen_wallpaper="${wallpaper_paths[$selection]}"
+    
+    # 1. Set Wallpaper with swww (ripple transition from cursor position)
+    swww img "$chosen_wallpaper" \
+        --transition-type grow \
+        --transition-pos "$(hyprctl cursorpos | sed 's/ //g')" \
+        --transition-duration 1.5
+    
+    # 2. Generate Pywal Colors (for terminals and legacy apps)
+    wal -i "$chosen_wallpaper" -n &
+    
+    # 3. Generate Matugen Theme (Waybar + Swaync + QuickSHELL + Rofi all at once)
+    matugen image "$chosen_wallpaper"
+    
+    # 4. Reload all components that consumed the new colors
+    # Waybar — hot-reload colors without restart
+    killall -SIGUSR2 waybar 2>/dev/null || true
+
+    # SwayNC — reload its GTK CSS (colors-swaync.css was just regenerated)
+    swaync-client --reload-config 2>/dev/null || true
+
+    # QuickSHELL — reload Theme.qml tokens
+    qs ipc call reload 2>/dev/null || true
+
+    # Notify the user
+    notify-send "󰸉 Wallpaper Applied" "$(basename "$chosen_wallpaper")" -t 2000
 fi
-
-CATEGORY_PATH="$WALLPAPER_DIR/$selected_category"
-
-# Step 2: Select Wallpaper
-wallpapers=$(find "$CATEGORY_PATH" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.gif" -o -iname "*.webp" \) -exec basename {} \;)
-
-if [ -z "$wallpapers" ]; then
-    rofi -e "No images found in $CATEGORY_PATH"
-    exit 1
-fi
-
-# Use rofi to select an image
-selected_wallpaper=$(echo "$wallpapers" | rofi -dmenu -i -p "Select Wallpaper...")
-
-if [ -z "$selected_wallpaper" ]; then
-    exit 0
-fi
-
-WALLPAPER_PATH="$CATEGORY_PATH/$selected_wallpaper"
-
-# Step 3: Apply Wallpaper with swww (grow transition for smooth round shape change)
-swww img "$WALLPAPER_PATH" --transition-type grow --transition-pos 0.854,0.972 --transition-step 90
-
-# Step 4: Generate Pywal colors for terminal
-wal -i "$WALLPAPER_PATH" -n
-
-# Step 5: Generate Matugen colors for Waybar
-matugen image "$WALLPAPER_PATH"
-
-# Step 6: Restart Waybar and update Kitty
-killall -SIGUSR1 kitty 2>/dev/null
-killall waybar
-waybar &

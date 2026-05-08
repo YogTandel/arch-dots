@@ -1,6 +1,77 @@
 [config]
+variant = "scheme-rainbow"
+contrast = 0
 reload_apps = true
 
+[config.wallpaper]
+command = "/usr/bin/swww"
+arguments = [
+  "img",
+  "--transition-type",
+  "center",
+  "--transition-step",
+  "15",
+  "--transition-fps",
+  "60",
+]
+set = false
+
+# Hyprland colors
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/hyprland-colors.conf'
+output_path = '~/.config/matugen/generated/hyprcolors.conf'
+post_hook = 'hyprctl reload'
+
+# Waybar
 [templates.waybar]
 input_path = "~/.config/matugen/templates/colors-waybar.css"
 output_path = "~/.config/waybar/colors.css"
+
+# Rofi
+[templates.rofi]
+input_path = "~/.config/matugen/templates/colors.rasi"
+output_path = "~/.config/matugen/generated/colors-glass.rasi"
+
+# QuickShell
+[templates.quickshell]
+input_path = "~/.config/matugen/templates/quickshell-theme.qml"
+output_path = "~/.config/quickshell/Theme.qml"
+
+# SwayNC
+[templates.swaync]
+input_path = "~/.config/matugen/templates/colors-swaync.css"
+output_path = "~/.config/matugen/generated/colors-swaync.css"
+
+# GTK3
+[templates.gtk3]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/matugen/generated/gtk-3.css'
+post_hook = 'thunar -q 2>/dev/null; sleep 0.3; thunar --daemon &'
+
+# GTK4
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-colors.css'
+output_path = '~/.config/matugen/generated/gtk-4.css'
+
+# Kitty
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty-colors.conf'
+output_path = '~/.config/matugen/generated/kitty-colors.conf'
+post_hook = '~/.config/kitty/matugen-reload.sh'
+
+# SwayOSD
+[templates.swayosd]
+input_path = '~/.config/matugen/templates/colors-swayosd.css'
+output_path = '~/.config/matugen/generated/colors-swayosd.css'
+post_hook = 'pkill -USR1 swaync || pkill -USR1 swayosd || true'
+
+# Wlogout
+[templates.wlogout]
+input_path = '~/.config/matugen/templates/colors.css'
+output_path = '~/.config/matugen/generated/colors.css'
+
+# Btop
+[templates.btop]
+input_path = '~/.config/matugen/templates/btop.theme'
+output_path = '~/.config/matugen/generated/btop.theme'
+post_hook = 'pkill -USR2 btop || true'
