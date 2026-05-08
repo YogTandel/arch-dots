@@ -26,6 +26,8 @@ mkdir -p ~/Wallpapers/{Dark,Light}
 
 See [THEME_SYSTEM.md](./THEME_SYSTEM.md) for theme system details and [.config/rofi/scripts/](./config/rofi/scripts/) for ROFI script info.
 
+For the ASUS ROG Strix G513RC / Ryzen 7 6800H / RTX 3050 Laptop setup, see [LAPTOP_DEPENDENCIES.md](./LAPTOP_DEPENDENCIES.md).
+
 ## Overview
 
 - **Wayland compositor:** [Hyprland](https://wiki.hypr.land/) 
