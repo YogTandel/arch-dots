@@ -67,7 +67,5 @@ autoload -Uz compinit && compinit
 # --- Enable Starship Prompt (MUST BE LAST LINE) ---
 eval "$(starship init zsh)"
 
-# Run fastfetch with a freshly selected random image when a new terminal opens
-~/.config/fastfetch/fastfetch-image-setup.sh &> /dev/null || true
+# Run fastfetch when a new terminal opens
 fastfetch
-

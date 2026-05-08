@@ -35,12 +35,11 @@ The active image is generated at:
    ~/.config/fastfetch/fastfetch-image-setup.sh
    ```
 
-3. **Auto-randomize on terminal startup:**
+3. **Auto-randomize on session startup:**
 
-   `.zshrc` already does this before running `fastfetch`:
+   Hyprland runs this once at session start:
    ```bash
-   ~/.config/fastfetch/fastfetch-image-setup.sh &> /dev/null || true
-   fastfetch
+   exec-once = ~/.config/fastfetch/fastfetch-image-setup.sh
    ```
 
 ## Usage
@@ -65,7 +64,7 @@ file ~/.cache/fastfetch/current-image.png
 
 - The `~/.cache/fastfetch/current-image.png` symlink always points to the current random image
 - `config.jsonc` reads from the generated cache path
-- `.zshrc` refreshes the generated image before each automatic `fastfetch` run
+- `.zshrc` only runs `fastfetch`; it does not change the image on every new terminal
 - Run `fastfetch-image-setup.sh` multiple times to cycle through images
 - If no images exist, fastfetch will show no logo
 - Supported formats: .jpg, .png, .gif
