@@ -5,7 +5,7 @@
 
 set -uo pipefail
 
-readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
+readonly ROFI_DIR="${HOME}/cloudyy_scripts/rofi"
 source "${ROFI_DIR}/lib/common.sh"
 
 # =============================================================================

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
-# main.sh — arch-dots Dashboard (Entry Point)
-# All submenus live in ~/.config/rofi/scripts/
+# main.sh — Cloudyy Dashboard (Entry Point)
+# All submenus live in ~/cloudyy_scripts/rofi/
 # =============================================================================
 
 set -uo pipefail
@@ -18,6 +18,11 @@ if ! command -v rofi &>/dev/null; then
   exit 1
 fi
 
+if [[ ! -x "$THEME_CTL" ]]; then
+  notify-send "Error" "Theme controller not found: $THEME_CTL"
+  exit 1
+fi
+
 init_dirs
 
 # =============================================================================
@@ -27,17 +32,17 @@ init_dirs
 show_main_menu() {
   local choice
   choice=$(menu "Dashboard" \
-    "󰛔 Tools\n󰈈 Appearance\n󰀻 Applications\n󰹑 System\n󰙵 Cloud Center\n󰏖 Packages\n󰚰 Update\n󰐥 Power")
+    "󰧑 Learn\n󰛔 Tools\n󰈈 Appearance\n󰀻 Applications\n󰹑 System\n󰏖 Packages\n󰚩 AI\n󰐥 Power")
 
   case "$choice" in
-  "󰛔 Tools")        exec "${ROFI_DIR}/tools.sh" ;;
-  "󰈈 Appearance")   exec "${ROFI_DIR}/appearance.sh" ;;
+  "󰧑 Learn") exec "${ROFI_DIR}/learn.sh" ;;
+  "󰛔 Tools") exec "${ROFI_DIR}/tools.sh" ;;
+  "󰈈 Appearance") exec "${ROFI_DIR}/appearance.sh" ;;
   "󰀻 Applications") exec "${ROFI_DIR}/applications.sh" ;;
-  "󰹑 System")       exec "${ROFI_DIR}/system.sh" ;;
-  "󰙵 Cloud Center") hyprctl dispatch exec "python3 ${HOME}/.config/cloud-center-v2/cloud-center.py" ;;
-  "󰏖 Packages")     exec "${ROFI_DIR}/packages.sh" ;;
-  "󰚰 Update")       kitty --hold -e yay -Syu ;;
-  "󰐥 Power")        exec "${ROFI_DIR}/power-menu.sh" ;;
+  "󰹑 System") exec "${ROFI_DIR}/system.sh" ;;
+  "󰏖 Packages") exec "${ROFI_DIR}/packages.sh" ;;
+  "󰚩 AI") exec "${ROFI_DIR}/ai.sh" ;;
+  "󰐥 Power") exec "${ROFI_DIR}/power-menu.sh" ;;
   *) exit 0 ;;
   esac
 }
@@ -49,10 +54,13 @@ show_main_menu() {
 main() {
   if [[ -n "${1:-}" ]]; then
     case "$1" in
-    --appearance)   exec "${ROFI_DIR}/appearance.sh" ;;
+    --random) run_app "$THEME_CTL" random ;;
+    --next) run_app "$THEME_CTL" next ;;
+    --toggle) run_app "$THEME_CTL" toggle ;;
+    --select) exec "${ROFI_DIR}/appearance.sh" --select ;;
+    --appearance) exec "${ROFI_DIR}/appearance.sh" ;;
     --applications) exec "${ROFI_DIR}/applications.sh" ;;
-    --packages)     exec "${ROFI_DIR}/packages.sh" ;;
-    --power)        exec "${ROFI_DIR}/power-menu.sh" ;;
+    --packages) exec "${ROFI_DIR}/packages.sh" ;;
     *) show_main_menu ;;
     esac
   else

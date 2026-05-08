@@ -4,7 +4,7 @@
 set -uo pipefail
 
 CYCLE_CONF="${HOME}/.config/hypr/theme_state/cycle.conf"
-THEME_CTL="${HOME}/.config/cloud-center-v2/theme_wrapper.sh"
+THEME_CTL="${HOME}/cloudyy_scripts/theme_controller.sh"
 
 AUTOMODE_ENABLED="false"
 AUTOMODE_LIGHT_HOUR="7"

@@ -7,8 +7,8 @@
 
 # --- PATHS ---
 readonly ROFI_DIR="${HOME}/.config/rofi/scripts"
-readonly THEME_CTL="${HOME}/.config/cloud-center-v2/theme_wrapper.sh"
-readonly BASE_WALL_DIR="${HOME}/Pictures/Wallpapers"
+readonly THEME_CTL="${HOME}/.cloudyy_scripts/theme_controller.sh"
+readonly BASE_WALL_DIR="${HOME}/Wallpapers"
 readonly CACHE_DIR="${HOME}/.cache/rofi_thumbs"
 
 # --- WALLPAPER THUMB SETTINGS ---
@@ -23,7 +23,6 @@ readonly ROFI_CMD=(
   rofi
   -dmenu
   -i
-  -theme "${HOME}/.config/rofi/config.rasi"
   -theme-str 'window { width: 28%; }'
   -theme-str 'listview { lines: 12; }'
 )
@@ -52,20 +51,15 @@ centered_menu() {
   local prompt="$1"
   local options="$2"
   printf "%b" "$options" | rofi -dmenu -i -p "$prompt" \
-    -theme "${HOME}/.config/rofi/config.rasi" \
     -theme-str 'window { location: center; anchor: center; width: 450px; }' \
     -theme-str 'listview { lines: 8; }' \
     -theme-str 'element { padding: 12px; }' \
     -theme-str 'element-text { font: "JetBrainsMono Nerd Font 12"; }'
 }
 
-# Fire-and-forget launcher
+# Fire-and-forget launcher via uwsm
 run_app() {
-  if command -v uwsm-app >/dev/null 2>&1; then
-    nohup uwsm-app -- "$@" >/dev/null 2>&1 &
-  else
-    nohup "$@" >/dev/null 2>&1 &
-  fi
+  nohup uwsm-app -- "$@" >/dev/null 2>&1 &
   disown
 }
 
@@ -79,9 +73,8 @@ back_to_main() {
 # =============================================================================
 
 get_current_mode() {
-  local state_file="${HOME}/.config/cloud-center/settings/theme/mode"
   local raw_mode
-  raw_mode=$(cat "$state_file" 2>/dev/null || echo "dark")
+  raw_mode=$("$THEME_CTL" get-mode 2>/dev/null || echo "dark")
   raw_mode=$(echo "$raw_mode" | tr -d '[:space:]')
   [[ "$raw_mode" != "light" && "$raw_mode" != "dark" ]] && raw_mode="dark"
   echo "$raw_mode"
